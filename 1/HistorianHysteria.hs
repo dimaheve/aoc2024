@@ -1,7 +1,9 @@
-module First where
+module HistorianHysteria where
 
 import Data.List (sortBy)
 import Data.Ord (comparing)
+
+-- Common
 
 inputs = lines <$> readFile "inputs.txt"
 
@@ -19,18 +21,39 @@ removeSpaces lst = removeSpaces' lst [] []
       let (c, d) = removeSpace x
        in removeSpaces' xs (c : a) (d : b)
 
+-- Part 1
+
 sortByDescending :: (Ord a) => [a] -> [a]
 sortByDescending = sortBy (flip compare)
 
-main :: IO ()
-main = do
-  inp <- inputs
+partOne :: [String] -> Int
+partOne inp = 
   let (a, b) = removeSpaces inp
       aOfInts = map (read @Int) a
       bOfInts = map (read @Int) b
       aSorted = sortByDescending aOfInts
       bSorted = sortByDescending bOfInts
       diff = zipWith (\a b -> if a >= b then a - b else b - a) aSorted bSorted
-      finalSum = sum diff
+  in sum diff
 
-  print finalSum
+-- Part 2
+
+countRepeated :: Int -> [Int] -> Int
+countRepeated x = length . filter (== x)
+
+partTwo :: [String] -> Int
+partTwo inp = 
+  let (a, b) = removeSpaces inp
+      aOfInts = map (read @Int) a
+      bOfInts = map (read @Int) b
+      repeats = map (`countRepeated` bOfInts) aOfInts
+      mulRepeats = zipWith (*) aOfInts repeats
+  in sum mulRepeats
+
+---
+
+main :: IO ()
+main = do
+  inp <- inputs
+  print $ partOne inp
+  print $ partTwo inp

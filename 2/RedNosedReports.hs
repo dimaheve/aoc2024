@@ -1,5 +1,7 @@
 module RedNosedReports where
 
+-- Common
+
 report :: IO [[Int]]
 report = do
   rawReport <- lines <$> readFile "report.txt"
@@ -47,6 +49,8 @@ isSafeWithDamp = foldr (\rl prl -> isSafe rl || prl) False . removedOne
 
 partTwo :: [[Int]] -> Int
 partTwo = length . filter id . map isSafeWithDamp
+
+---
 
 main :: IO ()
 main = do
