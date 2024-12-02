@@ -11,27 +11,27 @@ report = do
 
 -- Part 1
 
-data Safe where
-  InitSafe :: Int -> Safe
-  AscSafe :: Int -> Safe
-  DescSafe :: Int -> Safe
+data Level where
+  Init :: Int -> Level
+  Asc :: Int -> Level
+  Desc :: Int -> Level
 
 isSafe :: [Int] -> Bool
 isSafe [] = False
-isSafe (x : xs) = isSafe' xs (InitSafe x)
+isSafe (x : xs) = isSafe' xs (Init x)
   where
-    isSafe' :: [Int] -> Safe -> Bool
+    isSafe' :: [Int] -> Level -> Bool
     isSafe' [] _ = True
-    isSafe' (x : xs) (InitSafe p)
+    isSafe' (x : xs) (Init p)
       | x == p || abs (x - p) > 3 = False
-      | x > p = isSafe' xs (AscSafe x)
-      | x < p = isSafe' xs (DescSafe x)
-    isSafe' (x : xs) (AscSafe p)
+      | x > p = isSafe' xs (Asc x)
+      | x < p = isSafe' xs (Desc x)
+    isSafe' (x : xs) (Asc p)
       | x <= p || abs (x - p) > 3 = False
-      | otherwise = isSafe' xs (AscSafe x)
-    isSafe' (x : xs) (DescSafe p)
+      | otherwise = isSafe' xs (Asc x)
+    isSafe' (x : xs) (Desc p)
       | x >= p || abs (x - p) > 3 = False
-      | otherwise = isSafe' xs (DescSafe x)
+      | otherwise = isSafe' xs (Desc x)
 
 partOne :: [[Int]] -> Int
 partOne = length . filter id . map isSafe
