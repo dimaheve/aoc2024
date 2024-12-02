@@ -1,7 +1,5 @@
 module RedNosedReports where
 
-import Data.List ((\\))
-
 report :: IO [[Int]]
 report = do
   rawReport <- lines <$> readFile "report.txt"
