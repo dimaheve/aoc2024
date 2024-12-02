@@ -5,34 +5,24 @@ import Data.Ord (comparing)
 
 -- Common
 
-inputs = lines <$> readFile "inputs.txt"
-
-removeSpace :: String -> (String, String)
-removeSpace str =
-  let (firstPart, rest) = break (== ' ') str
-      secondPart = filter (/= ' ') (dropWhile (== ' ') rest)
-   in (firstPart, secondPart)
-
-removeSpaces :: [String] -> ([String], [String])
-removeSpaces lst = removeSpaces' lst [] []
-  where
-    removeSpaces' [] a b = (a, b)
-    removeSpaces' (x : xs) a b =
-      let (c, d) = removeSpace x
-       in removeSpaces' xs (c : a) (d : b)
+inputs :: IO [(Int, Int)]
+inputs = do 
+  inp <- lines <$> readFile "inputs.txt"
+  let spacedInput = map words inp
+      parsedInput = map (\x -> (read @Int $ head x, read @Int $ last x)) spacedInput
+  return parsedInput
 
 -- Part 1
 
 sortByDescending :: (Ord a) => [a] -> [a]
 sortByDescending = sortBy (flip compare)
 
-partOne :: [String] -> Int
+partOne :: [(Int, Int)] -> Int
 partOne inp = 
-  let (a, b) = removeSpaces inp
-      aOfInts = map (read @Int) a
-      bOfInts = map (read @Int) b
-      aSorted = sortByDescending aOfInts
-      bSorted = sortByDescending bOfInts
+  let a = map fst inp
+      b = map snd inp
+      aSorted = sortByDescending a
+      bSorted = sortByDescending b
       diff = zipWith (\a b -> if a >= b then a - b else b - a) aSorted bSorted
   in sum diff
 
@@ -41,13 +31,14 @@ partOne inp =
 countRepeated :: Int -> [Int] -> Int
 countRepeated x = length . filter (== x)
 
-partTwo :: [String] -> Int
+partTwo :: [(Int, Int)] -> Int
 partTwo inp = 
-  let (a, b) = removeSpaces inp
-      aOfInts = map (read @Int) a
-      bOfInts = map (read @Int) b
-      repeats = map (`countRepeated` bOfInts) aOfInts
-      mulRepeats = zipWith (*) aOfInts repeats
+  let a = map fst inp
+      b = map snd inp
+      aSorted = sortByDescending a
+      bSorted = sortByDescending b
+      repeats = map (`countRepeated` b) a
+      mulRepeats = zipWith (*) a repeats
   in sum mulRepeats
 
 ---
