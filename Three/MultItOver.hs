@@ -7,7 +7,16 @@ import Data.Text (Text)
 import Data.Text.IO qualified as TIO
 import Data.Void (Void)
 import Text.Megaparsec
-import Text.Megaparsec.Char
+  ( MonadParsec (try),
+    Parsec,
+    anySingle,
+    choice,
+    many,
+    parse,
+    some,
+    (<|>),
+  )
+import Text.Megaparsec.Char (char, digitChar, string)
 
 -- Common
 
