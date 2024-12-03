@@ -1,4 +1,3 @@
-
 {
   description = "Haskell Development Environment for Advent of Code (AoC)";
 
@@ -7,12 +6,12 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }:
+  outputs = { nixpkgs, flake-utils, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
           inherit system;
-          config.allowUnfree = true; # Allow unfree packages if needed
+          config.allowUnfree = true;
         };
       in
       {
@@ -26,6 +25,20 @@
               ormolu              
               ghcid               
               hoogle              
+              text_2_1_1
+              containers_0_7
+              deepseq_1_5_1_0
+              vector
+              split
+              array_0_5_8_0
+              megaparsec_9_6_1
+              mtl_2_3_1
+              PSQueue
+              search-algorithms
+              fgl
+              unordered-containers
+              hashable
+              algebraic-graphs
             ] ++ (with pkgs; [
               niv                 
               entr                

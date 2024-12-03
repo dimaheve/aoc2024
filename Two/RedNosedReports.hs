@@ -1,10 +1,10 @@
-module RedNosedReports where
+module Two.RedNosedReports where
 
 -- Common
 
 report :: IO [[Int]]
 report = do
-  rawReport <- lines <$> readFile "report.txt"
+  rawReport <- lines <$> readFile "Two/report.txt"
   let spacedReport = map words rawReport
       parsedReport = map (map $ read @Int) spacedReport
   return parsedReport
@@ -18,7 +18,7 @@ data Level where
 
 isSafe :: [Int] -> Bool
 isSafe [] = False
-isSafe (x : xs) = isSafe' xs (Init x)
+isSafe (x' : xs') = isSafe' xs' (Init x')
   where
     isSafe' :: [Int] -> Level -> Bool
     isSafe' [] _ = True
@@ -32,6 +32,7 @@ isSafe (x : xs) = isSafe' xs (Init x)
     isSafe' (x : xs) (Desc p)
       | x >= p || abs (x - p) > 3 = False
       | otherwise = isSafe' xs (Desc x)
+    isSafe' _ _ = False
 
 partOne :: [[Int]] -> Int
 partOne = length . filter id . map isSafe

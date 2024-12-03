@@ -1,0 +1,38 @@
+cabal-version:      3.0
+name:               aoc2024
+version:            0.1.0.0
+-- synopsis:
+-- description:
+license:            BSD-3-Clause
+license-file:       LICENSE
+author:             dimaheve
+maintainer:         129008239+dimaheve@users.noreply.github.com
+-- copyright:
+build-type:         Simple
+extra-doc-files:    CHANGELOG.md
+-- extra-source-files:
+
+common warnings
+    ghc-options: -Wall
+
+library
+    import:           warnings
+    exposed-modules:  One.HistorianHysteria,
+                      Two.RedNosedReports,
+                      Three.MultItOver
+    build-depends:    base ^>=4.18.2.1,                     
+                      text,
+                      containers,
+                      vector,
+                      split,
+                      array,
+                      megaparsec,
+                      mtl,
+                      psqueues,
+                      search-algorithms,
+                      fgl,
+                      unordered-containers,
+                      hashable,
+                      algebraic-graphs
+    hs-source-dirs:   .
+    default-language: GHC2021
