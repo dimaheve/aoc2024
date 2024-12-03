@@ -26,6 +26,19 @@
               ormolu              
               ghcid               
               hoogle              
+              text_2_1_1
+              containers_0_7
+              vector
+              split
+              array_0_5_8_0
+              megaparsec
+              mtl_2_3_1
+              PSQueue
+              search-algorithms
+              fgl
+              unordered-containers
+              hashable
+              algebraic-graphs
             ] ++ (with pkgs; [
               niv                 
               entr                
