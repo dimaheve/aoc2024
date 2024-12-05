@@ -11,7 +11,8 @@ library
     exposed-modules:  One.HistorianHysteria,
                       Two.RedNosedReports,
                       Three.MultItOver,
-                      Four.CeresSearch
+                      Four.CeresSearch,
+                      Five.PrintQueue
     build-depends:    base ^>=4.18,                     
                       text,
                       containers,
