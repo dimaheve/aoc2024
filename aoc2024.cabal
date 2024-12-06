@@ -12,7 +12,8 @@ library
                       Two.RedNosedReports,
                       Three.MultItOver,
                       Four.CeresSearch,
-                      Five.PrintQueue
+                      Five.PrintQueue,
+                      Six.GuardGallivant
     build-depends:    base ^>=4.18,                     
                       text,
                       containers,
