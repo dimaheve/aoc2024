@@ -24,6 +24,8 @@
               hlint               
               ormolu              
               ghcid               
+              parallel
+              split
               hoogle              
               text_2_1_1
               containers_0_7

@@ -13,9 +13,12 @@ library
                       Three.MultItOver,
                       Four.CeresSearch,
                       Five.PrintQueue,
-                      Six.GuardGallivant
+                      Six.GuardGallivant,
+                      Seven.BridgeRepair
     build-depends:    base ^>=4.18,                     
                       text,
+                      parallel,
+                      split,
                       containers,
                       vector,
                       split,
