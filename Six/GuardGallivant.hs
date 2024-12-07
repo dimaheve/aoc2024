@@ -1,112 +1,101 @@
-{-# LANGUAGE DeriveAnyClass #-}
-{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE OverloadedRecordDot #-}
 
 module Six.GuardGallivant where
 
-import Data.Array (Array, Ix (inRange), array, assocs, bounds, (!))
-import Data.HashSet (HashSet)
-import Data.HashSet qualified as HS
-import Data.Hashable (Hashable)
-import Data.Vector (Vector)
-import Data.Vector qualified as V
-import GHC.Generics (Generic)
+import Control.Parallel.Strategies
+import Data.Array.IArray
+import Data.Bifunctor (Bifunctor (bimap))
+import Data.List
+import Data.Maybe
+import Data.Set qualified as Set
 
 -- Common
 
-type Grid = Array (Int, Int) Char
+type Grid = Array (Int, Int) Bool
 
-type Coordinate = (Int, Int)
+type Position = (Int, Int)
 
-type State = (Coordinate, Direction)
+type Direction = (Int, Int)
 
-data Direction = North | East | South | West
-  deriving (Eq, Ord, Show, Generic, Hashable)
+data Guard where
+  Guard :: {pos :: Position, dir :: Position} -> Guard
+  deriving (Show, Eq)
 
-input :: IO Grid
+input :: IO (Grid, Position)
 input = do
-  ls <- fmap (reverse . lines) (readFile "Six/input.txt")
-  let h = length ls
+  rawInput <- readFile "Six/input.txt"
+  let ls = (reverse . lines) rawInput
+      h = length ls
       w = length (head ls)
   return $
-    array
-      ((0, 0), (w - 1, h - 1))
-      [((x, y), (ls !! y) !! x) | y <- [0 .. h - 1], x <- [0 .. w - 1]]
+    ( array
+        ((0, 0), (w - 1, h - 1))
+        [((x, y), ((ls !! y) !! x) == '#') | y <- [0 .. h - 1], x <- [0 .. w - 1]],
+      findStart rawInput
+    )
 
-inBounds :: Grid -> Coordinate -> Bool
-inBounds g = inRange (bounds g)
-
-charAt :: Grid -> Coordinate -> Maybe Char
-charAt g c = if inBounds g c then Just (g ! c) else Nothing
-
-move :: Coordinate -> Direction -> Coordinate
-move (x, y) = \case
-  North -> (x, y + 1)
-  East -> (x + 1, y)
-  South -> (x, y - 1)
-  West -> (x - 1, y)
+findStart :: String -> Position
+findStart text =
+  head $
+    [ (c, r)
+      | c <- [0 .. maxC],
+        r <- [0 .. maxR],
+        rows !! r !! c == '^'
+    ]
+  where
+    rows = reverse $ lines text
+    maxR = length rows - 1
+    maxC = length (head rows) - 1
 
 turnRight :: Direction -> Direction
-turnRight = \case
-  North -> East
-  East -> South
-  South -> West
-  West -> North
+turnRight (x, y) = (y, -x)
 
-findStart :: Grid -> Char -> Coordinate
-findStart grid ch = head [p | (p, c) <- assocs grid, c == ch]
-
-travelPath :: Grid -> Coordinate -> Direction -> Vector State
-travelPath grid startPos startDir = V.fromList (go [(startPos, startDir)] startPos startDir)
+step :: Grid -> Guard -> Maybe (Position, Guard)
+step grid guard
+  | not (inRange (bounds grid) guard.pos) = Nothing
+  | not (inRange (bounds grid) ahead) = Just (guard.pos, guard {pos = ahead})
+  | grid ! ahead = Just (guard.pos, guard {dir = turnRight guard.dir})
+  | otherwise = Just (guard.pos, guard {pos = ahead})
   where
-    go acc pos dir =
-      let nxt = move pos dir
-       in case charAt grid nxt of
-            Just '#' -> go acc pos (turnRight dir)
-            Just _ -> go ((nxt, dir) : acc) nxt dir
-            Nothing -> acc
+    ahead = bimap (fst guard.pos +) (snd guard.pos +) guard.dir
 
-partOne :: Grid -> Int
-partOne grid =
-  let startPos = findStart grid '^'
-      path = travelPath grid startPos North
-   in HS.size . HS.fromList . map fst . V.toList $ path
+walk :: Grid -> Guard -> [Position]
+walk grid = unfoldr (step grid)
 
--- Part Two
+-- Part 1
 
-data Result = Loops | Escapes deriving (Eq, Show)
+partOne :: Grid -> Position -> Int
+partOne inp start = length . Set.fromList $ walk inp (Guard start (0, 1))
 
-simulate :: Grid -> Coordinate -> Direction -> Coordinate -> Result
-simulate grid startPos startDir obstacle = go startPos startDir HS.empty
+-- Part 2
+
+isLoop :: Guard -> [Guard] -> Grid -> Bool
+isLoop guard trail grid
+  | isNothing stepped = False
+  | hasTurned && guard `elem` trail = True
+  | hasTurned = isLoop guard' (guard : trail) grid
+  | otherwise = isLoop guard' trail grid
   where
-    go pos dir visited
-      | not (inBounds grid pos) = Escapes
-      | (pos, dir) `HS.member` visited = Loops
-      | otherwise =
-          let nxt = move pos dir
-              visited' = HS.insert (pos, dir) visited
-           in if nxt == obstacle
-                then go pos (turnRight dir) visited'
-                else case charAt grid nxt of
-                  Just '#' -> go pos (turnRight dir) visited'
-                  Just _ -> go nxt dir visited'
-                  Nothing -> Escapes
+    stepped = step grid guard
+    (_, guard') = fromJust stepped
+    hasTurned = guard.dir /= guard'.dir
 
-possibleObstacles :: Vector State -> HashSet Coordinate
-possibleObstacles path =
-  let startPos = fst (V.last path)
-   in HS.delete startPos . HS.fromList . map fst . V.toList $ path
-
-partTwo :: Grid -> Int
-partTwo grid =
-  let startPos = findStart grid '^'
-      originalPath = travelPath grid startPos North
-      obstacles = possibleObstacles originalPath
-   in HS.size $ HS.filter (\obstacle -> simulate grid startPos North obstacle == Loops) obstacles
+partTwo :: Grid -> Position -> Int
+partTwo grid start = length $ filter id loopResults
+  where
+    modifiedGrids =
+      [ grid // [(new, True)]
+        | new <- news,
+          new /= guard.pos
+      ]
+    loopResults = parMap rpar (isLoop guard []) modifiedGrids
+    news = Set.toList . Set.fromList $ walk grid guard
+    guard = Guard start (0, 1)
 
 ---
 
 main :: IO ()
 main = do
-  inp <- input
-  print $ partOne inp
-  print $ partTwo inp
+  (inp, start) <- input
+  print $ partOne inp start
+  print $ partTwo inp start
