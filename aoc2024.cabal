@@ -14,40 +14,70 @@ common optimizations
                  -threaded
                  -rtsopts
                  -with-rtsopts=-N
-                 -fllvm
-                 -optlo-O3
 
-library
-    -- Import common settings
-    import: warnings
-    import: optimizations
-    
-    -- Module configuration
-    exposed-modules: One.HistorianHysteria
-                     Two.RedNosedReports
-                     Three.MultItOver
-                     Four.CeresSearch
-                     Five.PrintQueue
-                     Six.GuardGallivant
-                     Seven.BridgeRepair
-    
-    -- Dependencies
-    build-depends:     base ^>=4.18
-                     , text
-                     , parallel
-                     , split
-                     , containers
-                     , vector
-                     , array
-                     , megaparsec
-                     , mtl
-                     , psqueues
-                     , search-algorithms
-                     , fgl
-                     , unordered-containers
-                     , hashable
-                     , algebraic-graphs
-                     , linear
-    
-    hs-source-dirs:   .
+common deps
+    build-depends:    base ^>=4.18
+                    , text
+                    , parallel
+                    , split
+                    , containers
+                    , vector
+                    , array
+                    , megaparsec
+                    , mtl
+                    , psqueues
+                    , search-algorithms
+                    , fgl
+                    , unordered-containers
+                    , hashable
+                    , algebraic-graphs
+                    , linear
+
+executable HistorianHysteria
+    import: warnings, optimizations, deps
+    main-is: One/HistorianHysteria.hs
+    hs-source-dirs: .
+    ghc-options: -main-is One.HistorianHysteria
+    default-language: GHC2021
+
+executable RedNosedReports
+    import: warnings, optimizations, deps
+    main-is: Two/RedNosedReports.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Two.RedNosedReports
+    default-language: GHC2021
+
+executable MultItOver
+    import: warnings, optimizations, deps
+    main-is: Three/MultItOver.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Three.MultItOver
+    default-language: GHC2021
+
+executable CeresSearch
+    import: warnings, optimizations, deps
+    main-is: Four/CeresSearch.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Four.CeresSearch
+    default-language: GHC2021
+
+executable PrintQueue
+    import: warnings, optimizations, deps
+    main-is: Five/PrintQueue.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Five.PrintQueue
+    default-language: GHC2021
+
+executable GuardGallivant
+    import: warnings, optimizations, deps
+    main-is: Six/GuardGallivant.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Six.GuardGallivant
+    default-language: GHC2021
+
+executable BridgeRepair
+    import: warnings, optimizations, deps
+    main-is: Seven/BridgeRepair.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Seven.BridgeRepair
     default-language: GHC2021
