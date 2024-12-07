@@ -6,30 +6,48 @@ build-type:         Simple
 common warnings
     ghc-options: -Wall
 
+common optimizations
+    ghc-options: -O2
+                 -fspecialise-aggressively
+                 -fexpose-all-unfoldings
+                 -funbox-strict-fields
+                 -threaded
+                 -rtsopts
+                 -with-rtsopts=-N
+                 -fllvm
+                 -optlo-O3
+
 library
-    import:           warnings
-    exposed-modules:  One.HistorianHysteria,
-                      Two.RedNosedReports,
-                      Three.MultItOver,
-                      Four.CeresSearch,
-                      Five.PrintQueue,
-                      Six.GuardGallivant,
-                      Seven.BridgeRepair
-    build-depends:    base ^>=4.18,                     
-                      text,
-                      parallel,
-                      split,
-                      containers,
-                      vector,
-                      split,
-                      array,
-                      megaparsec,
-                      mtl,
-                      psqueues,
-                      search-algorithms,
-                      fgl,
-                      unordered-containers,
-                      hashable,
-                      algebraic-graphs
+    -- Import common settings
+    import: warnings
+    import: optimizations
+    
+    -- Module configuration
+    exposed-modules: One.HistorianHysteria
+                     Two.RedNosedReports
+                     Three.MultItOver
+                     Four.CeresSearch
+                     Five.PrintQueue
+                     Six.GuardGallivant
+                     Seven.BridgeRepair
+    
+    -- Dependencies
+    build-depends:     base ^>=4.18
+                     , text
+                     , parallel
+                     , split
+                     , containers
+                     , vector
+                     , array
+                     , megaparsec
+                     , mtl
+                     , psqueues
+                     , search-algorithms
+                     , fgl
+                     , unordered-containers
+                     , hashable
+                     , algebraic-graphs
+                     , linear
+    
     hs-source-dirs:   .
     default-language: GHC2021

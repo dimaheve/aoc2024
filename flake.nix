@@ -41,6 +41,7 @@
               unordered-containers
               hashable
               algebraic-graphs
+              linear
             ] ++ (with pkgs; [
               niv                 
               entr                
