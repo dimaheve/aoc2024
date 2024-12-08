@@ -81,3 +81,10 @@ executable BridgeRepair
     hs-source-dirs: .
     ghc-options: -main-is Seven.BridgeRepair
     default-language: GHC2021
+    
+executable ResonantCollinearity
+    import: warnings, optimizations, deps
+    main-is: Eight/ResonantCollinearity.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Eight.ResonantCollinearity
+    default-language: GHC2021
