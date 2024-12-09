@@ -13,7 +13,7 @@ common optimizations
                  -funbox-strict-fields
                  -threaded
                  -rtsopts
-                 -with-rtsopts=-N
+                 -with-rtsopts=-N12
 
 common deps
     build-depends:    base ^>=4.18
@@ -32,6 +32,7 @@ common deps
                     , hashable
                     , algebraic-graphs
                     , linear
+                    , deepseq
 
 executable HistorianHysteria
     import: warnings, optimizations, deps
@@ -87,4 +88,11 @@ executable ResonantCollinearity
     main-is: Eight/ResonantCollinearity.hs
     hs-source-dirs: .
     ghc-options: -main-is Eight.ResonantCollinearity
+    default-language: GHC2021
+    
+executable DiskFragmenter
+    import: warnings, optimizations, deps
+    main-is: Nine/DiskFragmenter.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Nine.DiskFragmenter
     default-language: GHC2021
