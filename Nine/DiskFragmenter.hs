@@ -5,6 +5,7 @@ import Data.List (foldl')
 import Data.Maybe (isJust, isNothing)
 import Data.Sequence (Seq ((:<|)))
 import Data.Sequence qualified as Seq
+import Data.Char (isDigit)
 
 ---
 
@@ -35,8 +36,8 @@ compressByBlock diskmap =
               Seq.update blockIndex Nothing $ Seq.update emptyIndex (Just blockId) currentDiskmap
         _otherwise -> currentDiskmap
 
-partOne :: [Seq (Int, Maybe Int)] -> Int
-partOne = sum . map (computeChecksum . compressByBlock)
+partOne :: Seq (Int, Maybe Int) -> Int
+partOne = computeChecksum . compressByBlock
 
 -- Part 2
 
@@ -62,8 +63,8 @@ compressBySegment diskmap = foldr tryCompress diskmap candidates
             then step2
             else Seq.insertAt (emptyIdx + 1) (emptySize - size, Nothing) step2
 
-partTwo :: [Seq (Int, Maybe Int)] -> Int
-partTwo = sum . map (computeChecksum . compressBySegment)
+partTwo :: Seq (Int, Maybe Int) -> Int
+partTwo = computeChecksum . compressBySegment
 
 -- Common
 
@@ -75,11 +76,11 @@ computeChecksum = fst . foldl' checksum (0, 0)
     checksum (acc, index) (count, Nothing) = (acc, index + count)
     checksum (acc, index) (count, Just blockId) = (sumIndices blockId index count + acc, index + count)
 
-input :: IO [Seq (Int, Maybe Int)]
+input :: IO (Seq (Int, Maybe Int))
 input = do
   contents <- readFile "Nine/input.txt"
-  let diskmaps = map (map (read . pure)) (lines contents)
-  return $ map (Seq.fromList . parseDiskmap 0 False) diskmaps
+  let diskmaps = map (read @Int . pure) $ filter isDigit contents
+  return $ (Seq.fromList . parseDiskmap 0 False) diskmaps
   where
     parseDiskmap :: Int -> Bool -> [Int] -> [(Int, Maybe Int)]
     parseDiskmap _ _ [] = []
