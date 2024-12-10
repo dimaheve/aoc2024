@@ -1,11 +1,11 @@
 module Nine.DiskFragmenter where
 
+import Data.Char (isDigit)
 import Data.Foldable (toList)
 import Data.List (foldl')
 import Data.Maybe (isJust, isNothing)
 import Data.Sequence (Seq ((:<|)))
 import Data.Sequence qualified as Seq
-import Data.Char (isDigit)
 
 ---
 
@@ -45,19 +45,20 @@ compressBySegment :: Seq (Int, Maybe Int) -> Seq (Int, Maybe Int)
 compressBySegment diskmap = foldr tryCompress diskmap candidates
   where
     candidates = filter (isJust . snd) $ toList diskmap
-    tryCompress (blockSize, Just blockId) currentMap =
+    tryCompress (_, Nothing) currentDiskmap = currentDiskmap
+    tryCompress (blockSize, Just blockId) currentDiskmap =
       case (,) <$> findBlockIndex <*> findEmptyIndex of
         Just (blockIdx, emptyIdx)
           | emptyIdx < blockIdx ->
-              moveBlock blockSize blockId blockIdx emptyIdx currentMap
-        _otherwise -> currentMap
+              moveBlock blockSize blockId blockIdx emptyIdx currentDiskmap
+        _otherwise -> currentDiskmap
       where
-        findBlockIndex = Seq.findIndexR (== (blockSize, Just blockId)) currentMap
-        findEmptyIndex = Seq.findIndexL (\(size, mid) -> size >= blockSize && isNothing mid) currentMap
+        findBlockIndex = Seq.findIndexR (== (blockSize, Just blockId)) currentDiskmap
+        findEmptyIndex = Seq.findIndexL (\(size, mid) -> size >= blockSize && isNothing mid) currentDiskmap
 
-    moveBlock size bid blockIdx emptyIdx diskmap =
+    moveBlock size bid blockIdx emptyIdx currentDiskmap =
       let (emptySize, _) = Seq.index diskmap emptyIdx
-          step1 = Seq.update blockIdx (size, Nothing) diskmap
+          step1 = Seq.update blockIdx (size, Nothing) currentDiskmap
           step2 = Seq.update emptyIdx (size, Just bid) step1
        in if emptySize == size
             then step2
