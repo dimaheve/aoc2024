@@ -1,5 +1,6 @@
 module Ten.HoofIt where
 
+import Control.Parallel.Strategies (parMap, rpar)
 import Data.Array.IArray
   ( Array,
     IArray (bounds),
@@ -23,7 +24,7 @@ partOne :: Grid -> Int
 partOne grid =
   let removeDuplicates = Set.toList . Set.fromList
       scoreTrail = length . filter ((== 9) . (grid !)) . removeDuplicates . bfs grid
-      scoredTrails = map scoreTrail (trailheads grid)
+      scoredTrails = parMap rpar scoreTrail (trailheads grid)
    in sum scoredTrails
 
 -- Part 2
@@ -31,7 +32,7 @@ partOne grid =
 partTwo :: Grid -> Int
 partTwo grid =
   let scoreTrail = length . filter ((== 9) . (grid !)) . bfs grid
-      scoredTrails = map scoreTrail (trailheads grid)
+      scoredTrails = parMap rpar scoreTrail (trailheads grid)
    in sum scoredTrails
 
 -- Common
