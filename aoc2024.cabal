@@ -96,3 +96,10 @@ executable DiskFragmenter
     hs-source-dirs: .
     ghc-options: -main-is Nine.DiskFragmenter
     default-language: GHC2021
+
+executable HoofIt
+    import: warnings, optimizations, deps
+    main-is: Ten/HoofIt.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Ten.HoofIt
+    default-language: GHC2021
