@@ -103,3 +103,10 @@ executable HoofIt
     hs-source-dirs: .
     ghc-options: -main-is Ten.HoofIt
     default-language: GHC2021
+
+executable PlutonianPebbles
+    import: warnings, optimizations, deps
+    main-is: Eleven/PlutonianPebbles.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Eleven.PlutonianPebbles
+    default-language: GHC2021
