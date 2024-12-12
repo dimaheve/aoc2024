@@ -110,3 +110,10 @@ executable PlutonianPebbles
     hs-source-dirs: .
     ghc-options: -main-is Eleven.PlutonianPebbles
     default-language: GHC2021
+
+executable GardenGroups
+    import: warnings, optimizations, deps
+    main-is: Twelve/GardenGroups.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Twelve.GardenGroups
+    default-language: GHC2021
