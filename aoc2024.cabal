@@ -117,3 +117,11 @@ executable GardenGroups
     hs-source-dirs: .
     ghc-options: -main-is Twelve.GardenGroups
     default-language: GHC2021
+
+executable ClawContraption
+    import: warnings, optimizations, deps
+    main-is: Thirdteen/ClawContraption.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Thirdteen.ClawContraption
+    default-language: GHC2021
+   
