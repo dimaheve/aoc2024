@@ -124,4 +124,11 @@ executable ClawContraption
     hs-source-dirs: .
     ghc-options: -main-is Thirdteen.ClawContraption
     default-language: GHC2021
+    
+executable RestroomRedoubt
+    import: warnings, optimizations, deps
+    main-is: Fourteen/RestroomRedoubt.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Fourteen.RestroomRedoubt
+    default-language: GHC2021
    
