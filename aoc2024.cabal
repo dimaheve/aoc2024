@@ -2,15 +2,12 @@ cabal-version:      3.0
 name:               aoc2024
 version:            0.1.0.0
 build-type:         Simple
-
+                    
 common warnings
     ghc-options: -Wall
 
 common optimizations
     ghc-options: -O2
-                 -fspecialise-aggressively
-                 -fexpose-all-unfoldings
-                 -funbox-strict-fields
                  -threaded
                  -rtsopts
                  -with-rtsopts=-N12
@@ -25,7 +22,7 @@ common deps
                     , array
                     , megaparsec
                     , mtl
-                    , psqueues
+                    , PSQueue
                     , search-algorithms
                     , fgl
                     , unordered-containers
@@ -33,6 +30,8 @@ common deps
                     , algebraic-graphs
                     , linear
                     , deepseq
+                    , sbv
+                    , heap
 
 executable HistorianHysteria
     import: warnings, optimizations, deps
@@ -131,4 +130,31 @@ executable RestroomRedoubt
     hs-source-dirs: .
     ghc-options: -main-is Fourteen.RestroomRedoubt
     default-language: GHC2021
-   
+
+executable WarehouseWoes
+    import: warnings, optimizations, deps
+    main-is: Fifteen/WarehouseWoes.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Fifteen.WarehouseWoes
+    default-language: GHC2021
+
+executable ReindeerMaze
+    import: warnings, optimizations, deps
+    main-is: Sixteen/ReindeerMaze.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Sixteen.ReindeerMaze
+    default-language: GHC2021
+
+executable ChronospatialComputer
+    import: warnings, optimizations, deps
+    main-is: Seventeen/ChronospatialComputer.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Seventeen.ChronospatialComputer
+    default-language: GHC2021
+
+executable RAMRun
+    import: warnings, optimizations, deps
+    main-is: Eighteen/RAMRun.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Eighteen.RAMRun
+    default-language: GHC2021
