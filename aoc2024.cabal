@@ -158,3 +158,10 @@ executable RAMRun
     hs-source-dirs: .
     ghc-options: -main-is Eighteen.RAMRun
     default-language: GHC2021
+
+executable LinenLayout
+    import: warnings, optimizations, deps
+    main-is: Nineteen/LinenLayout.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Nineteen.LinenLayout
+    default-language: GHC2021
