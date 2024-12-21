@@ -165,3 +165,17 @@ executable LinenLayout
     hs-source-dirs: .
     ghc-options: -main-is Nineteen.LinenLayout
     default-language: GHC2021
+
+executable RaceCondition
+    import: warnings, optimizations, deps
+    main-is: Twenty/RaceCondition.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Twenty.RaceCondition
+    default-language: GHC2021
+
+executable KeypadConundrum
+    import: warnings, optimizations, deps
+    main-is: Twentyone/KeypadConundrum.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Twentyone.KeypadConundrum
+    default-language: GHC2021
