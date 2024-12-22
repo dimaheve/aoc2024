@@ -11,7 +11,12 @@ common optimizations
                  -threaded
                  -rtsopts
                  -with-rtsopts=-N12
-
+                 -funbox-strict-fields
+                 -fspecialise-aggressively
+                 -mbmi2
+                 -mavx2
+                 -msse4.2
+                 
 common deps
     build-depends:    base ^>=4.18
                     , text
@@ -178,4 +183,11 @@ executable KeypadConundrum
     main-is: Twentyone/KeypadConundrum.hs
     hs-source-dirs: .
     ghc-options: -main-is Twentyone.KeypadConundrum
+    default-language: GHC2021
+
+executable MonkeyMarket
+    import: warnings, optimizations, deps
+    main-is: Twentytwo/MonkeyMarket.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Twentytwo.MonkeyMarket
     default-language: GHC2021

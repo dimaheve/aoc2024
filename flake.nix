@@ -45,7 +45,7 @@
             ] ++ (with pkgs; [
               niv                 
               entr                
-              gnumake             
+              gnumake
             ]);
 
             shellHook = ''
