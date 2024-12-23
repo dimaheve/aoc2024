@@ -191,3 +191,10 @@ executable MonkeyMarket
     hs-source-dirs: .
     ghc-options: -main-is Twentytwo.MonkeyMarket
     default-language: GHC2021
+
+executable LANParty
+    import: warnings, optimizations, deps
+    main-is: Twentythree/LANParty.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Twentythree.LANParty
+    default-language: GHC2021
