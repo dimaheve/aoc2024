@@ -38,15 +38,11 @@ partTwo (_, prog) = fromMaybe (error "no solution found") $ getQuineAReg (length
 
 -- Common
 
-data Machine where
-  Machine :: {registers :: Registers, ip :: Int} -> Machine
+data Machine where Machine :: {registers :: Registers, ip :: Int} -> Machine
 
-data Registers where
-  Registers :: {regA :: Int, regB :: Int, regC :: Int} -> Registers
-  deriving (Show)
+data Registers where Registers :: {regA :: Int, regB :: Int, regC :: Int} -> Registers deriving (Show)
 
-data Instruction = ADV | BXL | BST | JNZ | BXC | OUT | BDV | CDV
-  deriving (Show, Eq, Enum)
+data Instruction = ADV | BXL | BST | JNZ | BXC | OUT | BDV | CDV deriving (Show, Eq, Enum)
 
 runProgram :: Registers -> [Int] -> [Int]
 runProgram regs prog = reverse $ go (Machine regs 0) []
