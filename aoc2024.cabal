@@ -198,3 +198,11 @@ executable LANParty
     hs-source-dirs: .
     ghc-options: -main-is Twentythree.LANParty
     default-language: GHC2021
+
+executable CrossedWires
+    import: warnings, optimizations, deps
+    main-is: Twentyfour/CrossedWires.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Twentyfour.CrossedWires
+    default-language: GHC2021
+    
