@@ -205,4 +205,11 @@ executable CrossedWires
     hs-source-dirs: .
     ghc-options: -main-is Twentyfour.CrossedWires
     default-language: GHC2021
-    
+
+executable CodeChronicle
+    import: warnings, optimizations, deps
+    main-is: Twentyfive/CodeChronicle.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Twentyfive.CodeChronicle
+    default-language: GHC2021
+   
